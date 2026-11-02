@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fundo:#D9D5CD; --tinta:#1B1A18; --claro:#F4F2EE; --cinza:#6E6A62;
+  --sk:0deg; --ry:-12deg;
+  --f:"Archivo",system-ui,sans-serif;
+  --big:clamp(2.8rem,12.5vw,11.5rem);
+}
+*{box-sizing:border-box;margin:0}
+html{background:var(--fundo)}
+body{font-family:var(--f);color:var(--tinta);background:var(--fundo);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--tinta);outline-offset:4px}
+::selection{background:var(--tinta);color:var(--claro)}
+.wrap{padding:0 clamp(1rem,4vw,3rem)}
+
+/* Palco: com JS fica parado na tela e o conteúdo sobe por dentro dele */
+.virtual #palco{position:fixed;top:0;left:0;width:100%;overflow:hidden;will-change:transform}
+
+/* Palavras gigantes */
+.row{display:flex;justify-content:flex-end;align-items:flex-start;gap:clamp(.6rem,1.5vw,1.4rem)}
+.word{
+  font:900 var(--big)/.86 var(--f);font-stretch:125%;text-transform:uppercase;text-align:right;
+  color:var(--tinta);letter-spacing:-.01em;overflow-wrap:anywhere;max-width:100%;display:block;
+  transform:translate3d(var(--x,0),var(--y,0px),0) perspective(900px) rotateY(var(--ry)) skewY(var(--sk));
+  transform-origin:right center;opacity:var(--o,1);transition:color .3s;
+  text-decoration:none;will-change:transform,opacity;
+}
+.word.out{color:transparent;-webkit-text-stroke:clamp(1.5px,.25vw,3px) var(--tinta)}
+a.word:hover,a.word:focus-visible{color:var(--claro);-webkit-text-stroke:clamp(1.5px,.25vw,3px) var(--tinta)}
+a.word.out:hover{color:var(--tinta)}
+.year{font:600 .75rem/1 var(--f);position:relative;padding-top:.4rem;min-width:2.6rem;text-align:right;flex:none}
+.year::after{content:"";position:absolute;right:-.5rem;top:1.3rem;height:clamp(2.5rem,7vw,6rem);border-left:1.5px solid var(--tinta);transform:rotate(14deg);transform-origin:top}
+.desc{font:500 1rem/1.5 var(--f);max-width:30rem;margin:.9rem 0 2.6rem auto;text-align:right}
+
+/* Entrada do topo ao carregar */
+.hero .word{animation:subir 1.2s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*.14s + .15s)}
+@keyframes subir{from{clip-path:inset(0 0 100% 0);translate:0 45%}to{clip-path:inset(-30%);translate:0 0}}
+.hero .intro{animation:surgir 1s .9s both}
+@keyframes surgir{from{opacity:0}to{opacity:1}}
+
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-top:6rem;padding-bottom:3rem}
+.hero .intro{max-width:26rem;margin-top:2.5rem;font:500 1.15rem/1.5 var(--f)}
+section{padding:clamp(3rem,8vw,7rem) 0}
+.label{font:600 .8rem var(--f);margin-bottom:1.4rem;color:var(--cinza)}
+.sobre{max-width:38rem;margin:2.5rem 0 0 auto;display:grid;gap:1.4rem}
+.sobre p{font:500 clamp(1.05rem,1.8vw,1.35rem)/1.5 var(--f);font-stretch:108%}
+.sobre p:first-child{font-weight:700}
+
+/* Faixa de habilidades: anda junto com a rolagem */
+.faixa{overflow:hidden;margin:4rem calc(-1*clamp(1rem,4vw,3rem)) 0;background:var(--tinta);color:var(--claro);padding:.9rem 0;white-space:nowrap}
+.faixa div{display:inline-block;will-change:transform;font:900 clamp(1.6rem,4vw,3rem)/1 var(--f);font-stretch:125%;text-transform:uppercase}
+.faixa span{margin-right:1.4rem}
+
+/* Elementos fixos */
+.menu,.redes{position:fixed;z-index:10;color:var(--claro);mix-blend-mode:difference}
+.menu{top:1.2rem;left:clamp(1rem,4vw,3rem);display:flex;gap:1.4rem;font:700 .9rem var(--f);font-stretch:112%}
+.menu a{text-decoration:none}
+.menu a:hover,.redes a:hover b{text-decoration:underline;text-underline-offset:4px}
+.redes{right:clamp(1rem,3vw,2rem);bottom:1.2rem;display:grid;gap:.15rem;font:600 .8rem var(--f)}
+.redes a{display:flex;gap:1.1rem;text-decoration:none}
+.redes a b{font-weight:800;font-size:.95rem}
+.progresso{position:fixed;z-index:11;top:0;left:0;height:4px;width:100%;background:var(--tinta);transform:scaleX(0);transform-origin:left}
+.cursor{position:fixed;z-index:12;top:0;left:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--claro);mix-blend-mode:difference;pointer-events:none;opacity:0;transition:opacity .3s,width .4s cubic-bezier(.16,1,.3,1),height .4s cubic-bezier(.16,1,.3,1),margin .4s cubic-bezier(.16,1,.3,1)}
+.cursor.on{opacity:1}
+.cursor.grande{width:72px;height:72px;margin:-36px 0 0 -36px}
+@media(hover:none){.cursor{display:none}}
+footer{padding:3rem 0 5rem;font:500 .85rem var(--f)}
+
+@media(max-width:700px){
+  :root{--ry:-6deg;--big:clamp(2.4rem,15vw,5rem)}
+  .menu{gap:.9rem;font-size:.8rem}
+  .redes{display:none}
+}
+.mov{position:fixed;z-index:12;left:clamp(1rem,4vw,3rem);bottom:1.2rem;font:700 .75rem var(--f);font-stretch:112%;background:var(--tinta);color:var(--claro);border:0;border-radius:999px;padding:.55rem 1rem;cursor:pointer;transition:transform .3s}
+.mov:hover{transform:translateY(-3px)}
+</style>
+</head>
+<body>
+
+<div class="progresso" id="barra"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<button class="mov" id="mov" type="button" aria-pressed="true">Animação: ligada</button>
+<nav class="menu" aria-label="Principal">
+  <a href="#sobre">Sobre</a><a href="#projetos">Projetos</a><a href="#formacao">Formação</a><a href="#contato">Contato</a>
+</nav>
+<div class="redes" id="redes" aria-label="Redes"></div>
+
+<div id="palco">
+<main class="wrap">
+  <header class="hero" id="topo">
+    <div id="nome"></div>
+    <p class="intro" id="titulo"></p>
+  </header>
+
+  <section id="sobre">
+    <p class="label" data-v="0.06">Sobre</p>
+    <div class="row"><span class="word out">Sobre</span></div>
+    <div class="sobre" id="sobre-txt"></div>
+    <div class="faixa" aria-hidden="true"><div id="faixa"></div></div>
+  </section>
+
+  <section id="projetos">
+    <p class="label" data-v="0.06">Projetos</p>
+    <div id="projetos-lista"></div>
+  </section>
+
+  <section id="formacao">
+    <p class="label" data-v="0.06">Formação</p>
+    <div id="formacao-lista"></div>
+  </section>
+
+  <section id="contato">
+    <p class="label" data-v="0.06">Contato</p>
+    <div class="row"><a class="word out" id="mail" href="#" target="_blank" rel="noopener">Fale comigo</a></div>
+    <p class="desc" id="mail-txt" data-v="0.1"></p>
+  </section>
+</main>
+<footer class="wrap" id="rodape"></footer>
+</div>
+
+<script>
+const CONFIG = {
+  nome: "Gabriel Gresile",
+  titulo: "Estudante de Engenharia de Software, em busca da primeira oportunidade na área de tecnologia.",
+  email: "", 
+  sobre: [
+    "Sou estudante de Engenharia de Software, atualmente no segundo semestre da graduação, com grande interesse e fascínio pela área de tecnologia, especialmente pelo desenvolvimento de software e pela programação.",
+    "Estou sempre em busca de novos conhecimentos e oportunidades para desenvolver minhas habilidades, aprender novas tecnologias e colocar em prática o que aprendo na formação.",
+    "Tenho maior interesse em desenvolvimento de software, back-end, banco de dados e computação em nuvem, além de facilidade com digitação e escrita de documentos. Mantenho a mente aberta para conhecer outras áreas da tecnologia e descobrir novas possibilidades de atuação.",
+    "Busco minha primeira oportunidade profissional na área, onde eu possa contribuir com a equipe, adquirir experiência prática e continuar evoluindo. Acredito que curiosidade, dedicação e vontade de aprender são fundamentais para o crescimento profissional."
+  ],
+  habilidades: ["C#", "Back-end", "Banco de dados", "Computação em nuvem", "HTML", "CSS", "Documentação"],
+  projetos: [
+    { ano: "2026", titulo: "Site Transtusa", descricao: "Reconstrução do site da Transtusa, com rolagem animada, linha de ônibus que acompanha a página e seção de serviços na horizontal.", link: "projetos/transtusa.html" },
+    { ano: "2026", titulo: "Caixa Clara", descricao: "Site de controle de gastos mensais com login, gráficos e orientações financeiras para a pessoa saber quanto pode gastar.", link: "projetos/caixa-clara.html" },
+    { ano: "2026", titulo: "Calculadora", descricao: "Calculadora com histórico, uso pelo teclado e um avaliador de expressões próprio, sem usar eval.", link: "projetos/calculadora.html" }
+  ],
+  formacao: [
+    { periodo: "Atual", curso: "Engenharia de Software", lugar: "Graduação em andamento, 2º semestre" }
+  ],
+  redes: [
+    { nome: "github", url: "https://github.com/gresssile" },
+    { nome: "linkedin", url: "https://www.linkedin.com/in/gabriel-gresile-154133446" }
+  ]
+};
+const C = CONFIG, $ = id => document.getElementById(id);
+const make = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x) e.textContent = x; return e; };
+const linha = (ano, palavra, i, href) => {
+  const r = make("div", "row");
+  const y = make("span", "year", ano); y.dataset.v = "-0.12"; r.append(y);
+  const w = make(href ? "a" : "span", "word" + (i % 2 ? "" : " out"), palavra);
+  if (href) { w.href = href; w.target = "_blank"; w.rel = "noopener"; }
+  r.append(w); return r;
+};
+
+document.title = C.nome + " | Portfólio";
+$("titulo").textContent = C.titulo;
+C.sobre.forEach(t => { const p = make("p", "", t); p.dataset.v = "0.08"; $("sobre-txt").append(p); });
+const linkedin = C.redes.find(r => r.nome === "linkedin");
+$("mail").href = C.email ? "mailto:" + C.email : linkedin.url;
+$("mail-txt").textContent = C.email || linkedin.url.replace("https://www.", "");
+$("rodape").textContent = "© " + new Date().getFullYear() + " " + C.nome + ".";
+
+C.nome.split(" ").forEach((p, i) => {
+  const r = make("div", "row"), w = make("span", "word" + (i % 2 ? "" : " out"), p);
+  w.style.setProperty("--i", i); r.append(w); $("nome").append(r);
+});
+C.projetos.forEach((p, i) => {
+  const d = make("p", "desc", p.descricao); d.dataset.v = "0.1";
+  $("projetos-lista").append(linha(p.ano, p.titulo, i, p.link), d);
+});
+C.formacao.forEach((f, i) => {
+  const d = make("p", "desc", f.lugar); d.dataset.v = "0.1";
+  $("formacao-lista").append(linha(f.periodo, f.curso, i), d);
+});
+C.redes.forEach((r, i) => {
+  const a = make("a"); a.href = r.url; a.target = "_blank"; a.rel = "noopener";
+  a.append(make("span", "", String(i + 1).padStart(2, "0")), make("b", "", r.nome)); $("redes").append(a);
+});
+const itens = C.habilidades.map(h => h + " /").join(" ");
+for (let i = 0; i < 2; i++) $("faixa").append(make("span", "", (itens + " ").repeat(4)));
+
+const root = document.documentElement, palco = $("palco");
+let parado = false;
+
+if (true) {
+  root.classList.add("virtual");
+  const topo = el => { let y = 0; while (el && el !== palco) { y += el.offsetTop; el = el.offsetParent; } return y; };
+  let itensAnim = [], secoes = {}, vh = innerHeight, vw = innerWidth, faixaW = 1;
+
+  const medir = () => {
+    vh = innerHeight; vw = innerWidth;
+    document.body.style.height = palco.offsetHeight + "px";
+    itensAnim = [...document.querySelectorAll(".word")].map((w, i) => {
+      const r = w.parentElement; return { el: w, top: topo(r), h: r.offsetHeight, tipo: "w", dir: i % 2 ? -1 : 1, fase: i * .9 };
+    }).concat([...document.querySelectorAll("[data-v]")].map(e => ({ el: e, top: topo(e), h: e.offsetHeight, tipo: "p", v: +e.dataset.v })));
+    document.querySelectorAll("section").forEach(s => secoes["#" + s.id] = topo(s));
+    secoes["#topo"] = 0;
+    faixaW = $("faixa").firstChild.offsetWidth || 1;
+  };
+  new ResizeObserver(medir).observe(palco);
+  addEventListener("resize", medir);
+  document.fonts && document.fonts.ready.then(medir);
+  medir();
+
+  /* Menu: rolagem suave até a seção */
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+    const alvo = secoes[a.getAttribute("href")];
+    if (alvo !== undefined) { e.preventDefault(); scrollTo({ top: alvo, behavior: "smooth" }); }
+  }));
+
+  let atual = scrollY, ry = -12, alvoRy = -12, sk = 0;
+  const cur = $("cursor"); let cx = -100, cy = -100, ax = -100, ay = -100;
+  addEventListener("pointermove", e => { alvoRy = -18 + (e.clientX / vw) * 12; ax = e.clientX; ay = e.clientY; if (!parado) cur.classList.add("on"); });
+  document.addEventListener("pointerover", e => cur.classList.toggle("grande", !!(e.target.closest && e.target.closest("a"))));
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const t0 = performance.now();
+  $("mov").addEventListener("click", () => {
+    parado = !parado;
+    $("mov").textContent = parado ? "Animação: desligada" : "Animação: ligada";
+    $("mov").setAttribute("aria-pressed", String(!parado));
+    if (parado) cur.classList.remove("on");
+  });
+
+  (function quadro(agora) {
+    const y = scrollY, atraso = y - atual;
+    atual += atraso * (parado ? 1 : .075);
+    if (Math.abs(atraso) < .05) atual = y;
+    palco.style.transform = "translate3d(0," + (-atual).toFixed(2) + "px,0)";
+
+    sk += (clamp(parado ? 0 : atraso * .045, -8, 8) - sk) * .15;
+    ry += (alvoRy - ry) * .06;
+    cx += (ax - cx) * .15; cy += (ay - cy) * .15;
+    cur.style.transform = "translate3d(" + cx.toFixed(1) + "px," + cy.toFixed(1) + "px,0)";
+    root.style.setProperty("--sk", sk.toFixed(2) + "deg");
+    if (vw > 700) root.style.setProperty("--ry", ry.toFixed(2) + "deg");
+    $("barra").style.transform = "scaleX(" + (y / Math.max(1, document.body.offsetHeight - vh)).toFixed(4) + ")";
+
+    for (const it of itensAnim) {
+      const p = (it.top + it.h / 2 - atual - vh / 2) / vh;      /* 0 = centro da tela, + abaixo, - acima */
+      if (it.tipo === "w") {
+        let x = 0, o = 1;
+        if (parado) { x = 0; o = 1; }
+        else if (p > 0) { const t = clamp(1 - p / .85, 0, 1), e = 1 - Math.pow(1 - t, 3); x = (1 - e) * it.dir * vw * .45; o = clamp(e * 2, 0, 1); }
+        else { x = p * it.dir * vw * -.1; o = clamp((p + 1.25) / .45, 0, 1); }
+        it.el.style.setProperty("--x", x.toFixed(1) + "px");
+        it.el.style.setProperty("--o", o.toFixed(3));
+        it.el.style.setProperty("--y", (parado ? 0 : Math.sin((agora - t0) / 1500 + it.fase) * 12).toFixed(1) + "px");
+      } else {
+        it.el.style.translate = "0 " + (parado ? 0 : p * it.v * vh).toFixed(1) + "px";
+      }
+    }
+    /* Faixa de habilidades corre com a rolagem e um pouco sozinha */
+    const fx = parado ? 0 : -((atual * .6 + (agora - t0) * .07) % faixaW);
+    $("faixa").style.transform = "translate3d(" + fx.toFixed(1) + "px,0,0)";
+    requestAnimationFrame(quadro);
+  })(t0);
+}
+</script>
+</body>
+</html>
