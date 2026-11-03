@@ -21,11 +21,7 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--tinta);outline-offset:4px}
 ::selection{background:var(--tinta);color:var(--claro)}
 .wrap{padding:0 clamp(1rem,4vw,3rem)}
-
-/* Palco: com JS fica parado na tela e o conteúdo sobe por dentro dele */
 .virtual #palco{position:fixed;top:0;left:0;width:100%;overflow:hidden;will-change:transform}
-
-/* Palavras gigantes */
 .row{display:flex;justify-content:flex-end;align-items:flex-start;gap:clamp(.6rem,1.5vw,1.4rem)}
 .word{
   font:900 var(--big)/.86 var(--f);font-stretch:125%;text-transform:uppercase;text-align:right;
@@ -40,8 +36,6 @@ a.word.out:hover{color:var(--tinta)}
 .year{font:600 .75rem/1 var(--f);position:relative;padding-top:.4rem;min-width:2.6rem;text-align:right;flex:none}
 .year::after{content:"";position:absolute;right:-.5rem;top:1.3rem;height:clamp(2.5rem,7vw,6rem);border-left:1.5px solid var(--tinta);transform:rotate(14deg);transform-origin:top}
 .desc{font:500 1rem/1.5 var(--f);max-width:30rem;margin:.9rem 0 2.6rem auto;text-align:right}
-
-/* Entrada do topo ao carregar */
 .hero .word{animation:subir 1.2s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*.14s + .15s)}
 @keyframes subir{from{clip-path:inset(0 0 100% 0);translate:0 45%}to{clip-path:inset(-30%);translate:0 0}}
 .hero .intro{animation:surgir 1s .9s both}
@@ -54,13 +48,9 @@ section{padding:clamp(3rem,8vw,7rem) 0}
 .sobre{max-width:38rem;margin:2.5rem 0 0 auto;display:grid;gap:1.4rem}
 .sobre p{font:500 clamp(1.05rem,1.8vw,1.35rem)/1.5 var(--f);font-stretch:108%}
 .sobre p:first-child{font-weight:700}
-
-/* Faixa de habilidades: anda junto com a rolagem */
 .faixa{overflow:hidden;margin:4rem calc(-1*clamp(1rem,4vw,3rem)) 0;background:var(--tinta);color:var(--claro);padding:.9rem 0;white-space:nowrap}
 .faixa div{display:inline-block;will-change:transform;font:900 clamp(1.6rem,4vw,3rem)/1 var(--f);font-stretch:125%;text-transform:uppercase}
 .faixa span{margin-right:1.4rem}
-
-/* Elementos fixos */
 .menu,.redes{position:fixed;z-index:10;color:var(--claro);mix-blend-mode:difference}
 .menu{top:1.2rem;left:clamp(1rem,4vw,3rem);display:flex;gap:1.4rem;font:700 .9rem var(--f);font-stretch:112%}
 .menu a{text-decoration:none}
@@ -140,9 +130,9 @@ const CONFIG = {
   ],
   habilidades: ["C#", "Back-end", "Banco de dados", "Computação em nuvem", "HTML", "CSS", "Documentação"],
   projetos: [
-    { ano: "2026", titulo: "Site Transtusa", descricao: "Reconstrução do site da Transtusa, com rolagem animada, linha de ônibus que acompanha a página e seção de serviços na horizontal.", link: "projetos/transtusa.html" },
-    { ano: "2026", titulo: "Caixa Clara", descricao: "Site de controle de gastos mensais com login, gráficos e orientações financeiras para a pessoa saber quanto pode gastar.", link: "projetos/caixa-clara.html" },
-    { ano: "2026", titulo: "Calculadora", descricao: "Calculadora com histórico, uso pelo teclado e um avaliador de expressões próprio, sem usar eval.", link: "projetos/calculadora.html" }
+    { ano: "2026", titulo: "Site Transtusa", descricao: "Reconstrução do site da Transtusa, com rolagem animada, linha de ônibus que acompanha a página e seção de serviços na horizontal.", link: "https://gresssile.github.io/Site_Transtusa/" },
+    { ano: "2026", titulo: "Gastos Mensais", descricao: "Site de controle de gastos mensais com login, gráficos e orientações financeiras para a pessoa saber quanto pode gastar.", link: " https://gresssile.github.io/Portfolio/" },
+    { ano: "2026", titulo: "Calculadora", descricao: "Calculadora com histórico, uso pelo teclado e um avaliador de expressões próprio, sem usar eval.", link: "https://gresssile.github.io/Calculadoraa/" }
   ],
   formacao: [
     { periodo: "Atual", curso: "Engenharia de Software", lugar: "Graduação em andamento, 2º semestre" }
@@ -259,7 +249,6 @@ if (true) {
         it.el.style.translate = "0 " + (parado ? 0 : p * it.v * vh).toFixed(1) + "px";
       }
     }
-    /* Faixa de habilidades corre com a rolagem e um pouco sozinha */
     const fx = parado ? 0 : -((atual * .6 + (agora - t0) * .07) % faixaW);
     $("faixa").style.transform = "translate3d(" + fx.toFixed(1) + "px,0,0)";
     requestAnimationFrame(quadro);
